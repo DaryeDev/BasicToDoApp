@@ -16,6 +16,29 @@
 
 <body>
     <div id="app">
+        <div id="dialogOverlay" onclick="closeAllDialogs(event)">
+            <div id="newTableDialog" class="dialog">
+                <h2>New Table</h2>
+                <p>
+                    <input type="text" id="newTableName" name="newTableName" placeholder="📖 School Tasks" onkeypress="onNewTableNameInput(event)">
+                </p>
+                <div class="actions">
+                    <button id="cancel"onclick="closeNewTableDialog()">Cancel</button>
+                    <button type="submit" onclick="createTable()">Create Table</button>
+                </div>
+            </div>
+
+            <div id="deleteTableDialog" class="dialog">
+                <h2>Delete Table</h2>
+                <p>Are you sure you want to delete Table "<b><span id="deleteTableName"></span></b>"?</p>
+                <div class="actions">
+                    <button id="cancel"onclick="closeDeleteTableDialog()">Cancel</button>
+                    <button type="submit" id="deleteTableConfirmButton" class="danger">Delete Table</button>
+                </div>
+            </div>
+        </div>
+
+
         <div id="sidebar">
             <div id="sidebar-header">
                 <svg class="sidebar-logo" version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" width="1080" height="1080">
@@ -30,8 +53,8 @@
                         <ion-icon class="icon" name="grid-outline"></ion-icon>
                     </li>
                 </ul>
-                
-                <div class="addSidebarItem" title="Add Table"  onclick="addSidebarItem()">
+
+                <div class="addSidebarItem" title="Add Table" onclick="openNewTableDialog()">
                     <ion-icon class="icon" name="add"></ion-icon>
                 </div>
             </div>
