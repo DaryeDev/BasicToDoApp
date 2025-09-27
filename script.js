@@ -63,6 +63,34 @@ function updateSidebarFades() {
 
 
 
+var currentNewTableNameSuggestion = "";
+async function startChangeNewTableNameSuggestion() {
+    while (true) {
+        var selectedSuggestion = newTableNameSuggestions[Math.floor(Math.random() * newTableNameSuggestions.length)];
+        if (selectedSuggestion !== currentNewTableNameSuggestion) {
+            currentNewTableNameSuggestion = selectedSuggestion;
+
+            while (newTableNameInput.getAttribute("placeholder").length < Array.from(selectedSuggestion).length) {
+                var placeholder = newTableNameInput.getAttribute("placeholder");
+                newTableNameInput.setAttribute("placeholder", placeholder + Array.from(selectedSuggestion)[placeholder.length]);
+                await new Promise(resolve => setTimeout(resolve, 10));
+            }
+    
+            await new Promise(resolve => setTimeout(resolve, 2000));
+    
+            while (newTableNameInput.getAttribute("placeholder").length > 0) {
+                var placeholder = newTableNameInput.getAttribute("placeholder");
+                newTableNameInput.setAttribute("placeholder", Array.from(placeholder).slice(0, -1).join(""));
+                await new Promise(resolve => setTimeout(resolve, 10));
+            }
+    
+            await new Promise(resolve => setTimeout(resolve, 1000));
+        }
+    }
+}
+
+
+
 const newTableDialog = document.getElementById("newTableDialog");
 const newTableNameInput = document.getElementById("newTableName");
 var changeNewTableNameSuggestion = false;
@@ -75,18 +103,22 @@ function openNewTableDialog() {
     changeNewTableNameSuggestion = true;
 }
 function onNewTableNameInput(e) {
-    if (e.key === "Enter" && newTableNameInput.value && newTableNameInput.value.trim() !== "") {
+    if (e.key === "Enter") {
         e.preventDefault();
 
-        newTableName = e.target.value;
+        let newTableName = "";
+        if (!newTableNameInput.value || newTableNameInput.value.trim() === "") {
+            newTableName = currentNewTableNameSuggestion;
+        } else {
+            newTableName = e.target.value;
+        }
+
         newTableNameInput.value = "";
         createTable(null, newTableName);
     }
 }
 function closeNewTableDialog() {
     newTableDialog.classList.remove("show");
-
-    changeNewTableNameSuggestion = false;
 }
 
 
@@ -200,30 +232,6 @@ function closeAllDialogs(e) {
         dialog.classList.remove("show");
     });
 }
-
-
-    async function startChangeNewTableNameSuggestion() {
-        while (true) {
-            var selectedSuggestion = newTableNameSuggestions[Math.floor(Math.random() * newTableNameSuggestions.length)];
-
-            while (newTableNameInput.getAttribute("placeholder").length < Array.from(selectedSuggestion).length) {
-                var placeholder = newTableNameInput.getAttribute("placeholder");
-                newTableNameInput.setAttribute("placeholder", placeholder + Array.from(selectedSuggestion)[placeholder.length]);
-                await new Promise(resolve => setTimeout(resolve, 10));
-            }
-
-            await new Promise(resolve => setTimeout(resolve, 2000));
-
-            while (newTableNameInput.getAttribute("placeholder").length > 0) {
-                var placeholder = newTableNameInput.getAttribute("placeholder");
-                newTableNameInput.setAttribute("placeholder", Array.from(placeholder).slice(0, -1).join(""));
-                await new Promise(resolve => setTimeout(resolve, 10));
-            }
-
-            await new Promise(resolve => setTimeout(resolve, 1000));
-        }
-    }
-    startChangeNewTableNameSuggestion()
 
 
 
@@ -443,7 +451,7 @@ function init() {
         document.body.classList.remove("dark");
     }
 
-
+    startChangeNewTableNameSuggestion();
     loadTablesFromLocalStorage();
     updateSidebarFades();
     showAllTables();
