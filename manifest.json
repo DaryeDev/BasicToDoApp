@@ -8,6 +8,23 @@
     "background_color": "#121212",
     "theme_color": "#121212",
     "icons": [
-        { "src": "icon.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+        {
+            "purpose": "maskable",
+            "sizes": "1024x1024",
+            "src": "icon.png",
+            "type": "image/png"
+        },
+        {
+            "purpose": "maskable",
+            "sizes": "512x512",
+            "src": "icon_512.png",
+            "type": "image/png"
+        },
+        {
+            "purpose": "any",
+            "sizes": "512x512",
+            "src": "icon_round.png",
+            "type": "image/png"
+        }
     ]
 }
