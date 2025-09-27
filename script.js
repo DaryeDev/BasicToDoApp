@@ -17,6 +17,21 @@ var tables = {};
 
 const app = document.getElementById("app");
 
+function ensureThemeColorMetaTag() {
+    let el = document.querySelector('meta[name="theme-color"]');
+    if (!el) {
+        el = document.createElement('meta');
+        el.setAttribute('name', 'theme-color');
+        document.head.appendChild(el);
+    }
+    return el;
+}
+
+function updateThemeColorMeta(isDark) {
+    const color = isDark ? '#121212' : '#f0f0f0';
+    ensureThemeColorMetaTag().setAttribute('content', color);
+}
+
 function toggleDarkMode(value = null) {
     let nextValue;
     if (value !== null) {
@@ -34,6 +49,8 @@ function toggleDarkMode(value = null) {
 
     localStorage.setItem("darkMode", String(nextValue));
     console.log("darkMode:", nextValue);
+
+    updateThemeColorMeta(nextValue);
 }
 
 
@@ -442,6 +459,8 @@ function init() {
         document.body.classList.remove("dark");
     }
 
+    updateThemeColorMeta(darkMode);
+
     startChangeNewTableNameSuggestion();
     loadTablesFromLocalStorage();
     updateSidebarFades();
@@ -455,3 +474,16 @@ function init() {
     window.addEventListener("resize", updateSidebarFades);
 }
 init();
+
+// ===== Service Worker Registration =====
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+            .then((registration) => {
+                console.log('Service Worker registered with scope:', registration.scope);
+            })
+            .catch((error) => {
+                console.error('Service Worker registration failed:', error);
+            });
+    });
+}
