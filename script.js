@@ -15,6 +15,39 @@ const newTableNameSuggestions = [
 
 var tables = {};
 
+function generateId() {
+    return Math.random().toString(36).substring(2, 9);
+}
+
+function normalizeTaskItem(item) {
+    if (!item) {
+        return { id: generateId(), title: 'Task' };
+    }
+    if (typeof item === 'string') {
+        return { id: generateId(), title: item };
+    }
+    if (typeof item === 'object') {
+        const id = (typeof item.id === 'string' && item.id.trim() !== '') ? item.id : generateId();
+        const title = typeof item.title === 'string' ? item.title : (typeof item.name === 'string' ? item.name : 'Task');
+        return { id, title };
+    }
+    return { id: generateId(), title: String(item) };
+}
+
+function normalizeTasks(tasks) {
+    const ensured = {
+        todo: Array.isArray(tasks?.todo) ? tasks.todo.map(normalizeTaskItem) : [],
+        progress: Array.isArray(tasks?.progress) ? tasks.progress.map(normalizeTaskItem) : [],
+        done: Array.isArray(tasks?.done) ? tasks.done.map(normalizeTaskItem) : [],
+    };
+    return ensured;
+}
+
+function getTaskIndexById(tableId, col, taskId) {
+    const colArr = tables?.[tableId]?.tasks?.[col] || [];
+    return colArr.findIndex(t => t && t.id === taskId);
+}
+
 const app = document.getElementById("app");
 
 function ensureThemeColorMetaTag() {
@@ -182,7 +215,7 @@ function createTable(id, name, tasks = {}, addToLocalStorage = true) {
 
     tables[newTableId] = {
         name: newTableName,
-        tasks: tasks,
+        tasks: normalizeTasks(tasks),
     };
 
     if (addToLocalStorage) {
@@ -245,6 +278,7 @@ function closeAllDialogs(e) {
 // ===== Kanban Rendering and Interactions =====
 const tablesContainer = document.getElementById("tableContainer");
 const allTablesItem = document.getElementById("allTablesItem");
+var nextFocusTaskId = null;
 
 function renderAllTables(selectedId = null) {
     if (!tablesContainer) return;
@@ -274,9 +308,9 @@ function renderAllTables(selectedId = null) {
 
 function createTableCard(id, name, tasks = {}) {
     const ensuredTasks = {
-        todo: tasks.todo || [],
-        progress: tasks.progress || [],
-        done: tasks.done || [],
+        todo: (tasks.todo || []).map(normalizeTaskItem),
+        progress: (tasks.progress || []).map(normalizeTaskItem),
+        done: (tasks.done || []).map(normalizeTaskItem),
     };
 
     if (tables[id]) tables[id].tasks = ensuredTasks;
@@ -347,15 +381,16 @@ function columnTemplate(title, colId, theme) {
     return column;
 }
 
-function createTaskItem(tableId, col, index, title) {
+function createTaskItem(tableId, col, index, item) {
+    const t = normalizeTaskItem(item);
     const task = document.createElement('div');
     task.className = 'task';
 
     const input = document.createElement('textarea');
     input.className = 'title';
-    input.value = title || 'Nueva tarea';
+    input.value = t.title || 'Nueva tarea';
     input.rows = 2;
-    input.onchange = () => editTask(tableId, col, index, input.value);
+    input.onchange = () => editTask(tableId, col, t.id, input.value);
     task.appendChild(input);
 
     const actions = document.createElement('div');
@@ -371,10 +406,17 @@ function createTaskItem(tableId, col, index, title) {
         const btn = e.target.closest('.actionButton');
         if (!btn) return;
         const act = btn.dataset.act;
-        if (act === 'delete') deleteTask(tableId, col, index);
-        if (act === 'left') moveTask(tableId, col, index, -1);
-        if (act === 'right') moveTask(tableId, col, index, 1);
+        if (act === 'delete') deleteTask(tableId, col, t.id);
+        if (act === 'left') moveTask(tableId, col, t.id, -1);
+        if (act === 'right') moveTask(tableId, col, t.id, 1);
     });
+
+    if (nextFocusTaskId && t.id === nextFocusTaskId) {
+        setTimeout(() => {
+            input.focus();
+        }, 0);
+        nextFocusTaskId = null;
+    }
 
     return task;
 }
@@ -388,27 +430,35 @@ function saveAndRerender() {
 }
 
 function addTask(tableId, col) {
-    const taskTitle = 'New Task';
-    tables[tableId].tasks[col].push(taskTitle);
+    const newTask = { id: generateId(), title: 'New Task' };
+    tables[tableId].tasks[col].push(newTask);
+    nextFocusTaskId = newTask.id;
     saveAndRerender();
 }
 
-function editTask(tableId, col, index, newTitle) {
-    tables[tableId].tasks[col][index] = newTitle || 'Task';
+function editTask(tableId, col, taskId, newTitle) {
+    const idx = getTaskIndexById(tableId, col, taskId);
+    if (idx === -1) return;
+    const item = tables[tableId].tasks[col][idx];
+    tables[tableId].tasks[col][idx] = { id: item.id || taskId, title: newTitle || 'Task' };
     saveAndRerender();
 }
 
-function deleteTask(tableId, col, index) {
-    tables[tableId].tasks[col].splice(index, 1);
+function deleteTask(tableId, col, taskId) {
+    const idx = getTaskIndexById(tableId, col, taskId);
+    if (idx === -1) return;
+    tables[tableId].tasks[col].splice(idx, 1);
     saveAndRerender();
 }
 
-function moveTask(tableId, col, index, direction) {
+function moveTask(tableId, col, taskId, direction) {
     const order = ['todo','progress','done'];
     const fromIdx = order.indexOf(col);
     const toIdx = fromIdx + direction;
     if (toIdx < 0 || toIdx >= order.length) return;
-    const [item] = tables[tableId].tasks[col].splice(index, 1);
+    const idx = getTaskIndexById(tableId, col, taskId);
+    if (idx === -1) return;
+    const [item] = tables[tableId].tasks[col].splice(idx, 1);
     tables[tableId].tasks[order[toIdx]].push(item);
     saveAndRerender();
 }
