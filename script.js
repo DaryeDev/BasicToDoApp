@@ -106,15 +106,8 @@ function onNewTableNameInput(e) {
     if (e.key === "Enter") {
         e.preventDefault();
 
-        let newTableName = "";
-        if (!newTableNameInput.value || newTableNameInput.value.trim() === "") {
-            newTableName = currentNewTableNameSuggestion;
-        } else {
-            newTableName = e.target.value;
-        }
-
+        createTable(null, newTableNameInput.value);
         newTableNameInput.value = "";
-        createTable(null, newTableName);
     }
 }
 function closeNewTableDialog() {
@@ -152,23 +145,20 @@ function tableDeleteButtonClick(e) {
 
 function createTable(id, name, tasks = {}, addToLocalStorage = true) {
     let newTableId;
-    if (id) {
+    if (id && typeof id === "string" && id.trim() !== "") {
         newTableId = id;
     } else {
-        newTableId = Math.random().toString(36).substr(2, 9);
-    }
-    if (!newTableId || newTableId.trim() === "") {
-        return;
+        newTableId = Math.random().toString(36).substring(2, 9);
     }
 
     let newTableName;
-    if (name) {
+    if (name && typeof name === "string" && name.trim() !== "") {
         newTableName = name;
     } else {
         newTableName = document.getElementById("newTableName").value;
     }
     if (!newTableName || newTableName.trim() === "") {
-        return;
+        newTableName = currentNewTableNameSuggestion;
     }
 
     console.log("newTable:", newTableId, newTableName, tasks);
