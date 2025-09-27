@@ -446,17 +446,38 @@ body {
                             letter-spacing: .4px;
                             color: #202020;
                         }
-                        &.todo .columnHeader {
-                            background: linear-gradient(90deg,#ff7070,#ff8a8a) !important;
-                            color:#2b0000 !important;
+
+                        &.todo {
+                            .columnHeader {
+                                background: linear-gradient(90deg,#ff7070,#ff8a8a) !important;
+                                color:#2b0000 !important;
+                            }
+
+                            .actionButton[data-act="left"] {
+                                visibility: hidden;
+                                position: absolute;
+                                width: 0;
+                                height: 0;
+                                pointer-events: none;
+                            }
                         }
                         &.progress .columnHeader {
                             background: linear-gradient(90deg,#ffe45e,#ffd35a) !important;
                             color:#3a2d00 !important;
                         }
-                        &.done .columnHeader {
-                            background: linear-gradient(90deg,#6dff9b,#5bffa1) !important;
-                            color:#003318 !important;
+                        &.done {
+                            .columnHeader {
+                                background: linear-gradient(90deg,#6dff9b,#5bffa1) !important;
+                                color:#003318 !important;
+                            }
+
+                            .actionButton[data-act="right"] {
+                                visibility: hidden;
+                                position: absolute;
+                                width: 0;
+                                height: 0;
+                                pointer-events: none;
+                            }
                         }
                         
                         .columnBody {
@@ -532,18 +553,23 @@ body {
                                             width: 28px;
                                             height: 28px;
                                             border-radius: 8px;
-                                            border: 1px solid rgba(0,0,0,0.12);
-                                            background: rgba(255,255,255,0.6);
                                             cursor: pointer;
                                             transition: background-color .15s ease, transform .05s ease, border-color .15s ease;
     
                                             &:hover {
-                                                background: rgba(255,255,255,0.9);
-                                                border-color: rgba(0,0,0,0.2);
+                                                background: rgba(0, 0, 0, 0.21);
                                             }
     
                                             &:active {
                                                 transform: translateY(1px);
+                                            }
+
+                                            &[data-act="delete"] {
+                                                background: rgba(255, 0, 0, 0.4) !important;
+
+                                                &:hover {
+                                                    background: rgba(255, 0, 0, 0.65) !important;
+                                                }
                                             }
                                         }
                                     }
@@ -615,17 +641,6 @@ body {
                             background-color: #2f2f2f;
                             border-color: #4a4a4a;
                         }
-                    }
-                }
-
-                .close-btn {
-                    background: rgba(255,255,255,0.06);
-                    border-color: rgba(255,255,255,0.12);
-                    color: rgb(235,235,235);
-
-                    &:hover {
-                        background: rgba(255,255,255,0.12);
-                        border-color: rgba(255,255,255,0.2);
                     }
                 }
             }
@@ -717,21 +732,30 @@ body {
                             }
                         }
                     }
-
                 }
-                .task { background: rgba(0,0,0,0.25); color: #eee; border-color: rgba(255,255,255,0.08); }
-                .actions { background: linear-gradient(90deg, rgba(0,0,0,0), rgba(0,0,0,0.5)); }
+
+                .task {
+                    background: rgba(0,0,0,0.25) !important;
+                }
+
+                .actions {
+                    .actionButton {
+                        &:hover {
+                            background: rgba(255, 255, 255, 0.21) !important;
+                        }
+                    }
+                }
+
                 .addTaskButton {
-                    color:rgb(255, 0, 0);
-                    border-color: rgba(255,255,255,0.18);
+                    border-color: #636363 !important;
 
                     &:hover {
-                        background: rgba(255,255,255,0.06);
-                        border-color: rgba(255,255,255,0.18);
+                        background: #4c4c4c !important;
+                        border-color: #6c6c6c !important;
                     }
 
                     .icon {
-                        color: #e9e9e9;
+                        color: #e9e9e9 !important;
                     }
                 }
             }
