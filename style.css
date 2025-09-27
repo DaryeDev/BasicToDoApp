@@ -20,7 +20,7 @@ body {
 
     #app {
         display: flex;
-        height: 100vh;
+        height: 100dvh;
         width: 100vw;
         background-color: #fff;
         
@@ -138,7 +138,7 @@ body {
                 }
     
                 &.show {
-                    width: min(90vw, 420px);
+                    width: min(90vw, 300px);
                     padding: 20px 20px 56px 20px;
                     border-width: 1px;
                     box-shadow: 0 18px 50px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.08);
@@ -346,7 +346,7 @@ body {
                     
                     #darkModeToggleMask {
                         width: 100%;
-                        height: 100%;
+                        height: 25px;
                         clip-path: circle(12.5px at 50% 50%);
                     }
     
@@ -678,7 +678,7 @@ body {
     
     /* dark mode */
     &.dark {
-        background-color:rgb(45, 45, 45);
+        background-color:#121212;
     
         #app {
             background-color:rgb(45, 45, 45);
@@ -720,7 +720,6 @@ body {
             }
         
             #sidebar {
-                --sidebar-bg: #121212;
                 background-color: #121212;
         
                 #sidebarHeader {
@@ -909,10 +908,16 @@ body {
                     gap: 10px;
 
                     width: 50px;
+                    height: 75px;
+
+                    #darkModeToggleContainer {
+                        height: 100%;
+                    }
 
                     #darkModeToggle {
                         left: 11.5px !important;
                     }
+
                 }
             }
 
