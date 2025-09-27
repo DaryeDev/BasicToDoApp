@@ -334,9 +334,10 @@ function createTaskItem(tableId, col, index, title) {
     const task = document.createElement('div');
     task.className = 'task';
 
-    const input = document.createElement('input');
+    const input = document.createElement('textarea');
     input.className = 'title';
     input.value = title || 'Nueva tarea';
+    input.rows = 2;
     input.onchange = () => editTask(tableId, col, index, input.value);
     task.appendChild(input);
 

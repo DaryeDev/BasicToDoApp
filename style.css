@@ -533,7 +533,7 @@ body {
                                             box-shadow: 0 12px 22px rgba(0,0,0,0.08);
                                         }
         
-                                        input.title {
+                                        .title {
                                             width: 100%;
                                             border: none;
                                             outline: none;
@@ -541,6 +541,9 @@ body {
                                             font-family: "Montserrat", sans-serif;
                                             font-weight: 600;
                                             color: inherit;
+                                            resize: none;
+
+                                            transition: width .18s ease;
                                         }
         
                                         .actions {
@@ -583,7 +586,15 @@ body {
                                             }
                                         }
         
-                                        &:hover .actions { transform: translateX(0); }
+                                        &:hover {
+                                            .title {
+                                                width: calc(100% - 70px) !important;
+                                            }
+
+                                            .actions {
+                                                transform: translateX(0);
+                                            }
+                                        }
                                     }
                                 }
                         
@@ -862,6 +873,20 @@ body {
             .deleteButton {
                 pointer-events: auto !important;
                 opacity: 1 !important;
+            }
+        }
+
+        #main {
+            #tableContainer .table .board .column .columnBody .tasks .task {
+                &:has(.title:focus) {
+                    .title {
+                        width: calc(100% - 70px) !important;
+                    }
+
+                    .actions {
+                        transform: translateX(0) !important;
+                    }
+                }
             }
         }
     }
