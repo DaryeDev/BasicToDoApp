@@ -15,15 +15,16 @@
 </head>
 
 <body>
-    <div id="app">
+    <div id="app" class="dark">
         <div id="dialogOverlay" onclick="closeAllDialogs(event)">
             <div id="newTableDialog" class="dialog">
                 <h2>New Table</h2>
                 <p>
-                    <input type="text" id="newTableName" name="newTableName" placeholder="📖 School Tasks" onkeypress="onNewTableNameInput(event)">
+                    <input type="text" id="newTableName" name="newTableName" placeholder="📖 School Tasks"
+                        onkeypress="onNewTableNameInput(event)">
                 </p>
                 <div class="actions">
-                    <button id="cancel"onclick="closeNewTableDialog()">Cancel</button>
+                    <button id="cancel" onclick="closeNewTableDialog()">Cancel</button>
                     <button type="submit" onclick="createTable()">Create Table</button>
                 </div>
             </div>
@@ -32,7 +33,7 @@
                 <h2>Delete Table</h2>
                 <p>Are you sure you want to delete Table "<b><span id="deleteTableName"></span></b>"?</p>
                 <div class="actions">
-                    <button id="cancel"onclick="closeDeleteTableDialog()">Cancel</button>
+                    <button id="cancel" onclick="closeDeleteTableDialog()">Cancel</button>
                     <button type="submit" id="deleteTableConfirmButton" class="danger">Delete Table</button>
                 </div>
             </div>
@@ -40,16 +41,18 @@
 
 
         <div id="sidebar">
-            <div id="sidebar-header">
-                <svg class="sidebar-logo" version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" width="1080" height="1080">
+            <div id="sidebarHeader">
+                <svg class="sidebarLogo" version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080"
+                    width="1080" height="1080">
                     <path class="a" d="m261.1 162.5h-183.1v-145.5h531.2v145.5h-183.1v703.4h-165z" />
-                    <path class="a" d="m477.8 1063v-848.9h351.7q172.2 152.8 172.2 414.7 0 260.8-161.3 434.2zm165-140.7h109.1q34-42.4 53.4-123.7 20.6-81.2 20.6-161.3 0-190.4-71.6-277.7h-111.5z" />
+                    <path class="a"
+                        d="m477.8 1063v-848.9h351.7q172.2 152.8 172.2 414.7 0 260.8-161.3 434.2zm165-140.7h109.1q34-42.4 53.4-123.7 20.6-81.2 20.6-161.3 0-190.4-71.6-277.7h-111.5z" />
                 </svg>
             </div>
             <div class="divider"></div>
-            <div id="sidebar-content">
-                <ul id="sidebar-list">
-                    <li class="sidebar-item selected" title="All Tables">
+            <div id="sidebarContent">
+                <ul id="sidebarList">
+                    <li class="sidebarItem selected" id="allTablesItem" title="All Tables">
                         <ion-icon class="icon" name="grid-outline"></ion-icon>
                     </li>
                 </ul>
@@ -59,7 +62,7 @@
                 </div>
             </div>
             <div class="divider"></div>
-            <div id="sidebar-footer" onclick="toggleDarkMode()">
+            <div id="sidebarFooter" onclick="toggleDarkMode()">
                 <div id="darkModeToggleContainer" title="Toggle Dark Mode">
                     <div id="darkModeToggleMask">
                         <div id="darkModeToggle">
@@ -70,7 +73,11 @@
                 </div>
             </div>
         </div>
-        <div class="main"></div>
+
+
+        <div id="main">
+            <div id="tableContainer"></div>
+        </div>
     </div>
 </body>
 

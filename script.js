@@ -1,13 +1,3 @@
-const ioniconsList = [
-    "list-outline",
-    "settings-outline",
-    "help-outline",
-    "person-outline",
-    "log-out-outline",
-    "moon-outline",
-    "sunny-outline",
-];
-
 const newTableNameSuggestions = [
     "📖 School Tasks",
     "🏠 Home Tasks",
@@ -48,7 +38,7 @@ function toggleDarkMode(value = null) {
 
 
 
-const sidebarContent = document.getElementById("sidebar-list");
+const sidebarContent = document.getElementById("sidebarList");
 function updateSidebarFades() {
     console.log("updateSidebarFades");
     if (!sidebarContent) return;
@@ -61,13 +51,13 @@ function updateSidebarFades() {
     const showBoth = showTop && showBottom;
     
     if (showBoth) {
-        sidebarContent.classList.remove("show-top-fade");
-        sidebarContent.classList.remove("show-bottom-fade");
-        sidebarContent.classList.add("show-both-fades");
+        sidebarContent.classList.remove("showTopFade");
+        sidebarContent.classList.remove("showBottomFade");
+        sidebarContent.classList.add("showBothFades");
     } else {
-        sidebarContent.classList.remove("show-both-fades");
-        sidebarContent.classList.toggle("show-top-fade", showTop);
-        sidebarContent.classList.toggle("show-bottom-fade", showBottom);
+        sidebarContent.classList.remove("showBothFades");
+        sidebarContent.classList.toggle("showTopFade", showTop);
+        sidebarContent.classList.toggle("showBottomFade", showBottom);
     }
 }
 
@@ -120,7 +110,7 @@ function tableDeleteButtonClick(e) {
     e.stopPropagation();
     
     const deleteButton = e.target.closest(".deleteButton");
-    const tableElement = deleteButton.closest(".sidebar-item");
+    const tableElement = deleteButton.closest(".sidebarItem");
     const tableId = tableElement.getAttribute("id");
     const tableName = tableElement.getAttribute("title");
     openDeleteTableDialog(tableName, tableId);
@@ -161,11 +151,12 @@ function createTable(id, name, tasks = {}, addToLocalStorage = true) {
     }
 
     // update sidebar
-    const sidebarList = document.getElementById("sidebar-list");
+    const sidebarList = document.getElementById("sidebarList");
     const newItem = document.createElement("li");
-    newItem.classList.add("sidebar-item");
+    newItem.classList.add("sidebarItem");
     newItem.setAttribute("title", newTableName);
     newItem.setAttribute("id", newTableId);
+    newItem.onclick = () => selectTable(newTableId);
     newItem.innerHTML = `<div class="deleteButton" onclick="tableDeleteButtonClick(event)">
                             <ion-icon class="icon" name="close"></ion-icon>
                         </div>
@@ -175,14 +166,17 @@ function createTable(id, name, tasks = {}, addToLocalStorage = true) {
     updateSidebarFades();
 
     closeNewTableDialog();
+    renderAllTables();
+    selectTable(newTableId);
 }
 function deleteTable(id) {
     delete tables[id];
     localStorage.setItem("tables", JSON.stringify(tables));
-    const sidebarList = document.getElementById("sidebar-list");
+    const sidebarList = document.getElementById("sidebarList");
     const item = sidebarList.querySelector(`li[id="${id}"]`);
     sidebarList.removeChild(item);
     closeDeleteTableDialog();
+    renderAllTables();
 }
 function loadTablesFromLocalStorage() {
     var loadedTables = localStorage.getItem("tables");
@@ -231,15 +225,228 @@ function closeAllDialogs(e) {
     }
     startChangeNewTableNameSuggestion()
 
+
+
+// ===== Kanban Rendering and Interactions =====
+const tablesContainer = document.getElementById("tableContainer");
+const allTablesItem = document.getElementById("allTablesItem");
+
+function renderAllTables(selectedId = null) {
+    if (!tablesContainer) return;
+    tablesContainer.innerHTML = "";
+
+    const ids = Object.keys(tables);
+    ids.forEach((id) => {
+        const table = tables[id];
+        const card = createTableCard(id, table.name, table.tasks);
+        tablesContainer.appendChild(card);
+    });
+
+    // When a single table is selected, apply compact mode and fade others
+    if (selectedId && tables[selectedId]) {
+        const cards = tablesContainer.querySelectorAll('.table');
+        cards.forEach(card => {
+            if (card.dataset.id !== selectedId) {
+                card.classList.add('fade-out');
+                card.remove();
+                // setTimeout(() => card.remove(), 300);
+            } else {
+                card.classList.remove('fade-out');
+            }
+        });
+    }
+}
+
+function createTableCard(id, name, tasks = {}) {
+    const ensuredTasks = {
+        todo: tasks.todo || [],
+        progress: tasks.progress || [],
+        done: tasks.done || [],
+    };
+
+    if (tables[id]) tables[id].tasks = ensuredTasks;
+
+    const card = document.createElement('div');
+    card.className = 'table fade-in';
+    card.dataset.id = id;
+
+    const label = document.createElement('div');
+    label.className = 'tableLabel';
+    label.textContent = name;
+    card.appendChild(label);
+
+    const todoColumn = columnTemplate('To Do', 'todo', 'todo');
+    const progressColumn = columnTemplate('In Progress', 'progress', 'progress');
+    const doneColumn = columnTemplate('Done!', 'done', 'done');
+
+    const board = document.createElement('div');
+    board.className = 'board';
+    board.appendChild(todoColumn);
+    board.appendChild(progressColumn);
+    board.appendChild(doneColumn);
+    card.appendChild(board);
+
+    // create Task Elements
+    [['todo', todoColumn],['progress', progressColumn],['done', doneColumn]].forEach(([col, column]) => {
+        const ul = column.querySelector('.tasks');
+        ensuredTasks[col].forEach((t, idx) => {
+            ul.appendChild(createTaskItem(id, col, idx, t));
+        });
+    });
+
+    // addTaskButton handlers
+    const addButtons = card.querySelectorAll('.addTaskButton');
+    addButtons.forEach(btn => btn.addEventListener('click', () => addTask(id, btn.dataset.col)));
+
+    // setTimeout(() => card.classList.remove('fade-in'), 300);
+    
+    return card;
+}
+
+function columnTemplate(title, colId, theme) {
+    const column = document.createElement('div');
+    column.className = `column ${theme}`;
+
+    const header = document.createElement('div');
+    header.className = 'columnHeader';
+    header.textContent = title;
+    column.appendChild(header);
+
+    const body = document.createElement('div');
+    body.className = 'columnBody';
+    body.setAttribute('data-col', colId);
+
+    const tasks = document.createElement('div');
+    tasks.className = 'tasks';
+    tasks.setAttribute('data-col', colId);
+    body.appendChild(tasks);
+
+    const btn = document.createElement('button');
+    btn.className = 'addTaskButton';
+    btn.setAttribute('data-col', colId);
+    btn.innerHTML = '<ion-icon class="icon" name="add"></ion-icon>';
+    body.appendChild(btn);
+
+    column.appendChild(body);
+
+    return column;
+}
+
+function createTaskItem(tableId, col, index, title) {
+    const task = document.createElement('div');
+    task.className = 'task';
+
+    const input = document.createElement('input');
+    input.className = 'title';
+    input.value = title || 'Nueva tarea';
+    input.onchange = () => editTask(tableId, col, index, input.value);
+    task.appendChild(input);
+
+    const actions = document.createElement('div');
+    actions.className = 'actions';
+    actions.innerHTML = `
+        <div class="actionButton" title="Borrar" data-act="delete"><ion-icon name="trash-outline"></ion-icon></div>
+        <div class="actionButton" title="Izquierda" data-act="left"><ion-icon name="arrow-back-outline"></ion-icon></div>
+        <div class="actionButton" title="Derecha" data-act="right"><ion-icon name="arrow-forward-outline"></ion-icon></div>
+    `;
+    task.appendChild(actions);
+
+    actions.addEventListener('click', (e) => {
+        const btn = e.target.closest('.actionButton');
+        if (!btn) return;
+        const act = btn.dataset.act;
+        if (act === 'delete') deleteTask(tableId, col, index);
+        if (act === 'left') moveTask(tableId, col, index, -1);
+        if (act === 'right') moveTask(tableId, col, index, 1);
+    });
+
+    return task;
+}
+
+function saveAndRerender() {
+    localStorage.setItem('tables', JSON.stringify(tables));
+    // keep current selection
+    const selected = document.querySelector('#sidebarList .sidebarItem.selected');
+    const selectedId = selected && selected.id !== 'allTablesItem' ? selected.id : null;
+    renderAllTables(selectedId);
+}
+
+function addTask(tableId, col) {
+    const taskTitle = 'New Task';
+    tables[tableId].tasks[col].push(taskTitle);
+    saveAndRerender();
+}
+
+function editTask(tableId, col, index, newTitle) {
+    tables[tableId].tasks[col][index] = newTitle || 'Task';
+    saveAndRerender();
+}
+
+function deleteTask(tableId, col, index) {
+    tables[tableId].tasks[col].splice(index, 1);
+    saveAndRerender();
+}
+
+function moveTask(tableId, col, index, direction) {
+    const order = ['todo','progress','done'];
+    const fromIdx = order.indexOf(col);
+    const toIdx = fromIdx + direction;
+    if (toIdx < 0 || toIdx >= order.length) return;
+    const [item] = tables[tableId].tasks[col].splice(index, 1);
+    tables[tableId].tasks[order[toIdx]].push(item);
+    saveAndRerender();
+}
+
+// Sidebar selection logic
+function selectTable(id) {
+    const list = document.getElementById('sidebarList');
+    list.querySelectorAll('.sidebarItem').forEach(i => i.classList.remove('selected'));
+    const item = list.querySelector(`li[id="${id}"]`);
+    if (item) item.classList.add('selected');
+
+    renderAllTables();
+
+    const cards = tablesContainer.querySelectorAll('.table');
+    cards.forEach(card => {
+        if (card.dataset.id !== id) {
+            card.classList.add('fade-out');
+            card.remove();
+            // setTimeout(() => card.remove(), 300);
+        } else {
+            card.classList.remove('fade-out');
+        }
+    });
+}
+
+function showAllTables() {
+    renderAllTables();
+
+    const list = document.getElementById('sidebarList');
+    list.querySelectorAll('.sidebarItem').forEach(i => i.classList.remove('selected'));
+    if (allTablesItem) allTablesItem.classList.add('selected');
+
+    app.classList.add('showAllTables');
+}
+
+if (allTablesItem) {
+    allTablesItem.onclick = () => showAllTables();
+}
+
+
+
+
 function init() {
     const darkMode = localStorage.getItem("darkMode") === "true";
     if (darkMode) {
         app.classList.add("dark");
+    } else {
+        app.classList.remove("dark");
     }
+
 
     loadTablesFromLocalStorage();
     updateSidebarFades();
-
+    showAllTables();
 
 
     // listeners para actualizar los fades de la sidebar
