@@ -500,7 +500,7 @@ body {
                     
                                 &:empty::after {
                                     content: "No Tasks yet";
-                                    color: rgba(255, 255, 255, 0.3);
+                                    color: rgba(0, 0, 0, 0.3);
                                     font-style: italic;
                                     font-weight: 400;
                                     text-align: center;
@@ -728,6 +728,10 @@ body {
                                     .actions {
                                         background: linear-gradient(90deg, rgba(0,0,0,0), rgba(0,0,0,0.5));
                                     }
+                                }
+
+                                &:empty::after {
+                                    color: rgba(255, 255, 255, 0.3);
                                 }
                             }
                         }
