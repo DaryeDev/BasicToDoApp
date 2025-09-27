@@ -27,9 +27,9 @@ function toggleDarkMode(value = null) {
     }
 
     if (nextValue) {
-        app.classList.add("dark");
+        document.body.classList.add("dark");
     } else {
-        app.classList.remove("dark");
+        document.body.classList.remove("dark");
     }
 
     localStorage.setItem("darkMode", String(nextValue));
@@ -438,9 +438,9 @@ if (allTablesItem) {
 function init() {
     const darkMode = localStorage.getItem("darkMode") === "true";
     if (darkMode) {
-        app.classList.add("dark");
+        document.body.classList.add("dark");
     } else {
-        app.classList.remove("dark");
+        document.body.classList.remove("dark");
     }
 
 

@@ -13,589 +13,589 @@ body {
         -ms-user-select: none;
         -o-user-select: none;
     }
-}
 
-#app {
-    display: flex;
-    height: 100vh;
-    width: 100vw;
-    background-color: #fff;
-    
-    transition: all 0.3s ease;
-
-    #dialogOverlay {
-        position: absolute;
+    #app {
         display: flex;
-        align-items: center;
-        justify-content: center;
-        backdrop-filter: blur(10px);
-        background-color: rgba(0, 0, 0, 0.5);
-        z-index: 1000;
-        cursor: pointer;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
+        height: 100vh;
+        width: 100vw;
+        background-color: #fff;
         
         transition: all 0.3s ease;
-        
-        .dialog {
-            width: 0;
-            background-color: #f0f0f0;
-            border-radius: 12px;
-            cursor: default;
-            overflow: hidden;
-
-            position: relative;
-
-            box-shadow: none;
-            border: 0px solid rgba(0, 0, 0, 0.06);
-
-            /* subtle entrance */
-            opacity: 0;
-            transform: translateY(8px) scale(0.985);
-            transition: opacity 200ms ease, transform 220ms cubic-bezier(.22,1,.36,1), width 0ms ease, padding 0ms ease, border-width 0ms ease, box-shadow 0ms ease;
-
-            h2 {
-                margin-top: 0;
-                margin-bottom: 8px;
-                font-size: 18px;
-                line-height: 1.2;
-            }
-            
-            p {
-                margin: 0;
-                color: rgb(80, 80, 80);
-                line-height: 1.5;
-            }
-
-            input {
-                width: calc(100% - 20px);
-                margin: 10px 0;
-                padding: 10px;
-                border-radius: 10px;
-                border: 1px solid rgb(101, 101, 101);
-                outline: none;
-                font-family: "Montserrat", sans-serif;
-                font-weight: 500;
-                color:rgb(22, 22, 22);
-                background-color:rgb(175, 175, 175);
-
-                transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
-                
-                &:focus-visible {
-                    border-color: rgb(60, 60, 60);
-                    box-shadow: 0 0 0 3px rgba(0,0,0,0.08);
-                }
-            }
-            
-            .actions {
-                bottom: 10px;
-                width: calc(100% - 40px);
-                display: flex;
-                justify-content: flex-end;
-                align-items: center;
-                position: absolute;
-                gap: 10px;
-
-                button {
-                    padding: 10px 16px;
-                    border-radius: 10px;
-                    border: 1px solid rgb(160, 160, 160);
-                    outline: none;
-                    font-family: "Montserrat", sans-serif;
-                    background-color: rgb(240, 240, 240);
-                    color: rgb(36, 36, 36);
-                    cursor: pointer;
-                    transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.05s ease;
-
-                    &:hover {
-                        background-color: rgb(230, 230, 230);
-                        border-color: rgb(150, 150, 150);
-                    }
-
-                    &:active {
-                        transform: translateY(1px);
-                    }
-
-                    &:focus-visible {
-                        box-shadow: 0 0 0 3px rgba(0,0,0,0.08);
-                    }
-
-                    &.danger {
-                        background-color: rgb(255, 0, 0) !important;
-                        border-color: rgb(255, 0, 0) !important;
-                    }
-
-                    &.danger:hover {
-                        background-color: rgb(200, 0, 0) !important;
-                        border-color: rgb(200, 0, 0) !important;
-                    }
-                }
-            }
-
-            &.show {
-                width: min(90vw, 420px);
-                padding: 20px 20px 56px 20px;
-                border-width: 1px;
-                box-shadow: 0 18px 50px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.08);
-                opacity: 1;
-                transform: none;
-            }
-        }
-
-        pointer-events: none;
-        opacity: 0;
-        &:has(.dialog.show) {
-            pointer-events: auto;
-            opacity: 1;
-        }
-    }
-
-    #sidebar {
-        width: 75px;
-        height: 100%;
-        background-color: #f0f0f0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-
-        transition: background-color 0.3s ease;
-
-        #sidebarHeader {
-            width: 75px;
-            height: 75px;
-            top: 0;
+    
+        #dialogOverlay {
+            position: absolute;
             display: flex;
             align-items: center;
             justify-content: center;
-
-            .sidebarLogo {
-                fill: rgb(49, 49, 49);
-                width: 30px;
-                height: 30px;
-                transition: fill 0.3s ease;
+            backdrop-filter: blur(10px);
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            
+            transition: all 0.3s ease;
+            
+            .dialog {
+                width: 0;
+                background-color: #f0f0f0;
+                border-radius: 12px;
+                cursor: default;
+                overflow: hidden;
+    
+                position: relative;
+    
+                box-shadow: none;
+                border: 0px solid rgba(0, 0, 0, 0.06);
+    
+                /* subtle entrance */
+                opacity: 0;
+                transform: translateY(8px) scale(0.985);
+                transition: opacity 200ms ease, transform 220ms cubic-bezier(.22,1,.36,1), width 0ms ease, padding 0ms ease, border-width 0ms ease, box-shadow 0ms ease;
+    
+                h2 {
+                    margin-top: 0;
+                    margin-bottom: 8px;
+                    font-size: 18px;
+                    line-height: 1.2;
+                }
+                
+                p {
+                    margin: 0;
+                    color: rgb(80, 80, 80);
+                    line-height: 1.5;
+                }
+    
+                input {
+                    width: calc(100% - 20px);
+                    margin: 10px 0;
+                    padding: 10px;
+                    border-radius: 10px;
+                    border: 1px solid rgb(101, 101, 101);
+                    outline: none;
+                    font-family: "Montserrat", sans-serif;
+                    font-weight: 500;
+                    color:rgb(22, 22, 22);
+                    background-color:rgb(175, 175, 175);
+    
+                    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+                    
+                    &:focus-visible {
+                        border-color: rgb(60, 60, 60);
+                        box-shadow: 0 0 0 3px rgba(0,0,0,0.08);
+                    }
+                }
+                
+                .actions {
+                    bottom: 10px;
+                    width: calc(100% - 40px);
+                    display: flex;
+                    justify-content: flex-end;
+                    align-items: center;
+                    position: absolute;
+                    gap: 10px;
+    
+                    button {
+                        padding: 10px 16px;
+                        border-radius: 10px;
+                        border: 1px solid rgb(160, 160, 160);
+                        outline: none;
+                        font-family: "Montserrat", sans-serif;
+                        background-color: rgb(240, 240, 240);
+                        color: rgb(36, 36, 36);
+                        cursor: pointer;
+                        transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.05s ease;
+    
+                        &:hover {
+                            background-color: rgb(230, 230, 230);
+                            border-color: rgb(150, 150, 150);
+                        }
+    
+                        &:active {
+                            transform: translateY(1px);
+                        }
+    
+                        &:focus-visible {
+                            box-shadow: 0 0 0 3px rgba(0,0,0,0.08);
+                        }
+    
+                        &.danger {
+                            background-color: rgb(255, 0, 0) !important;
+                            border-color: rgb(255, 0, 0) !important;
+                        }
+    
+                        &.danger:hover {
+                            background-color: rgb(200, 0, 0) !important;
+                            border-color: rgb(200, 0, 0) !important;
+                        }
+                    }
+                }
+    
+                &.show {
+                    width: min(90vw, 420px);
+                    padding: 20px 20px 56px 20px;
+                    border-width: 1px;
+                    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.08);
+                    opacity: 1;
+                    transform: none;
+                }
+            }
+    
+            pointer-events: none;
+            opacity: 0;
+            &:has(.dialog.show) {
+                pointer-events: auto;
+                opacity: 1;
             }
         }
-
-        .divider {
-            width: calc(100% - 20px);
-            margin: 0 10px;
-            height: 2px;
-            border-radius: 1px;
-            background-color:rgb(190, 190, 190);
-        }
-
-        #sidebarContent {
-            width: 100%;
-            flex: 1;
+    
+        #sidebar {
+            width: 75px;
+            height: 100%;
+            background-color: #f0f0f0;
             display: flex;
             flex-direction: column;
             align-items: center;
-            overflow-y: auto;
-
-            #sidebarList {
-                padding: 0;
+            justify-content: center;
+    
+            transition: background-color 0.3s ease;
+    
+            #sidebarHeader {
+                width: 75px;
+                height: 75px;
+                top: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+    
+                .sidebarLogo {
+                    fill: rgb(49, 49, 49);
+                    width: 30px;
+                    height: 30px;
+                    transition: fill 0.3s ease;
+                }
+            }
+    
+            .divider {
+                width: calc(100% - 20px);
+                margin: 0 10px;
+                height: 2px;
+                border-radius: 1px;
+                background-color:rgb(190, 190, 190);
+            }
+    
+            #sidebarContent {
                 width: 100%;
-                margin-bottom: 0;
-                overflow-y: auto;
+                flex: 1;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                list-style: none;
-                gap: 10px;
-                position: relative;
-
-                &.showTopFade {
-                    mask-image: linear-gradient(0deg, #000 calc(100% - 30px), transparent);
-                }
-
-                &.showBottomFade {
-                    mask-image: linear-gradient(180deg, #000 calc(100% - 30px), transparent)
-                }
-
-                &.showBothFades {
-                    mask-image: linear-gradient(180deg, transparent 0%, rgb(0, 0, 0) calc(30px), rgb(0, 0, 0) calc(100% - 30px), transparent 100%);
-                }
-            }
-
-            .sidebarItem, .addSidebarItem {
-                width: 50px;
-                min-height: 50px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                cursor: pointer;
-                border-radius: 5px;
-                position: relative;
-
-                transition: background-color 0.3s ease;
-
-                .deleteButton {
-                    position: absolute;
-                    top: -5px;
-                    right: -5px;
-                    width: 20px;
-                    height: 20px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    border-radius: 20px;
-                    background-color: rgb(255, 0, 0);
-
-                    transition: background-color 0.3s ease, opacity 0.3s ease;
-
-                    cursor: pointer;
-                    pointer-events: none;
-                    opacity: 0;
-
-                    &:hover {
-                        background-color: rgb(200, 0, 0);
-                    }
-
-                    .icon {
-                        color: rgb(255, 255, 255);
-                        width: 15px;
-                        height: 15px;
-                    }
-                }
-
-                .icon {
-                    color: rgb(136, 136, 136);
-                    width: 30px;
-                    height: 30px;
-                    max-width: 30px;
-                    max-height: 30px;
-
-                    margin: 0;
+                overflow-y: auto;
+    
+                #sidebarList {
                     padding: 0;
-
-                    overflow: hidden;
-
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-
-                    transition: color 0.3s ease;
-                    font-size: 20px;
-
-                    user-select: none;
-                }
-
-                &:hover {
-                    background-color: rgb(225, 225, 225);
-
-                    .deleteButton {
-                        pointer-events: auto;
-                        opacity: 1;
-                    }
-                }
-
-                &.selected {
-                    background-color: rgb(225, 225, 225);
-
-                    .sidebarItemIcon {
-                        color: rgb(36, 36, 36);
-                        font-weight: 600;
-                    }
-                }
-            }
-
-            .addSidebarItem {
-                margin: 10px 0;
-                min-height: 35px;
-                background-color: rgb(201, 201, 201);
-
-                &:hover {
-                    background-color: rgb(181, 181, 181);
-                }
-                
-                .icon {
-                    color: rgb(81, 81, 81);
-                }
-            }
-        }
-
-        #sidebarFooter {
-            width: 100%;
-            height: 55px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            
-            #darkModeToggleContainer {
-                width: 100%;
-                height: 25px;
-                padding: 15px 0;
-                position: relative;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                cursor: pointer;
-
-                transition: background-color 0.3s ease;
-
-                &:hover {
-                    background-color: rgb(225, 225, 225);
-                }
-                
-                #darkModeToggleMask {
                     width: 100%;
-                    height: 100%;
-                    clip-path: circle(12.5px at 50% 50%);
-                }
-
-                #darkModeToggle {
-                    position: absolute;
+                    margin-bottom: 0;
+                    overflow-y: auto;
                     display: flex;
-                    flex-direction: row;
+                    flex-direction: column;
                     align-items: center;
-                    justify-content: center;
+                    list-style: none;
                     gap: 10px;
-                    transition: left 0.3s ease;
-        
-                    left: 24.5px; 
-        
-                    .darkModeToggle-icon {
-                        color: rgb(136, 136, 136);
-                        width: 25px;
-                        height: 25px;
-                    }
-                }
-            }
-        }
-    }
-
-    #main {
-        flex: 1;
-        background-color:rgb(255, 255, 255);
-
-        #tableContainer {
-            width: calc(100% - 40px);
-            height: calc(100% - 40px);
-            padding: 20px;
-            gap: 20px;
-            overflow: auto;
-            display: flex;
-            position: relative;
-            flex-direction: column;
-            align-items: center;
-            overflow: scroll;
-            
-            .table {
-                width: calc(100% - 20px);
-                position: relative;
-                background: rgba(0,0,0,0.04);
-                border-radius: 22px;
-                box-shadow: 0 20px 40px rgba(0,0,0,0.08);
-                border: 1px solid rgba(0,0,0,0.06);
-                transition: opacity .25s ease, transform .25s ease, padding-top .25s ease;
-    
-                &.showName {
-                    padding-top: 30px;
-    
-                    .tableLabel {
-                        opacity: 1;
-                    }
-                }
-
-                &.fade-out {
-                    opacity: 0 !important;
-                    transform: scale(0) !important;
-                    pointer-events: none !important;
-                }
-                &.fade-in {
-                    opacity: 1 !important;
-                    transform: scale(1) !important;
-                    pointer-events: auto !important;
-                }
-    
-                .tableLabel {
-                    position: absolute;
-                    top: 10px;
-                    width: 100%;
-                    text-align: center;
-                    font-weight: 700;
-                    font-size: 18px;
-                    color: #000;
-                    opacity .3s ease;
-                }
-    
-                .board {
                     position: relative;
-                    z-index: 1;
-                    display: grid;
-                    grid-template-columns: 1fr 1fr 1fr;
-                    gap: 12px;
-                    padding: 12px;
     
-                    .column {
+                    &.showTopFade {
+                        mask-image: linear-gradient(0deg, #000 calc(100% - 30px), transparent);
+                    }
+    
+                    &.showBottomFade {
+                        mask-image: linear-gradient(180deg, #000 calc(100% - 30px), transparent)
+                    }
+    
+                    &.showBothFades {
+                        mask-image: linear-gradient(180deg, transparent 0%, rgb(0, 0, 0) calc(30px), rgb(0, 0, 0) calc(100% - 30px), transparent 100%);
+                    }
+                }
+    
+                .sidebarItem, .addSidebarItem {
+                    width: 50px;
+                    min-height: 50px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    cursor: pointer;
+                    border-radius: 5px;
+                    position: relative;
+    
+                    transition: background-color 0.3s ease;
+    
+                    .deleteButton {
+                        position: absolute;
+                        top: -5px;
+                        right: -5px;
+                        width: 20px;
+                        height: 20px;
                         display: flex;
-                        flex-direction: column;
-                        gap: 10px;
-                        background: rgba(255,255,255,0.6);
-                        border-radius: 16px;
+                        align-items: center;
+                        justify-content: center;
+                        border-radius: 20px;
+                        background-color: rgb(255, 0, 0);
+    
+                        transition: background-color 0.3s ease, opacity 0.3s ease;
+    
+                        cursor: pointer;
+                        pointer-events: none;
+                        opacity: 0;
+    
+                        &:hover {
+                            background-color: rgb(200, 0, 0);
+                        }
+    
+                        .icon {
+                            color: rgb(255, 255, 255);
+                            width: 15px;
+                            height: 15px;
+                        }
+                    }
+    
+                    .icon {
+                        color: rgb(136, 136, 136);
+                        width: 30px;
+                        height: 30px;
+                        max-width: 30px;
+                        max-height: 30px;
+    
+                        margin: 0;
+                        padding: 0;
+    
                         overflow: hidden;
     
-                        .columnHeader {
-                            padding: 10px 14px;
-                            text-align: center;
-                            font-weight: 700;
-                            letter-spacing: .4px;
-                            color: #202020;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+    
+                        transition: color 0.3s ease;
+                        font-size: 20px;
+    
+                        user-select: none;
+                    }
+    
+                    &:hover {
+                        background-color: rgb(225, 225, 225);
+    
+                        .deleteButton {
+                            pointer-events: auto;
+                            opacity: 1;
                         }
-
-                        &.todo {
-                            .columnHeader {
-                                background: linear-gradient(90deg,#ff7070,#ff8a8a) !important;
-                                color:#2b0000 !important;
-                            }
-
-                            .actionButton[data-act="left"] {
-                                visibility: hidden;
-                                position: absolute;
-                                width: 0;
-                                height: 0;
-                                pointer-events: none;
-                            }
+                    }
+    
+                    &.selected {
+                        background-color: rgb(225, 225, 225);
+    
+                        .sidebarItemIcon {
+                            color: rgb(36, 36, 36);
+                            font-weight: 600;
                         }
-                        &.progress .columnHeader {
-                            background: linear-gradient(90deg,#ffe45e,#ffd35a) !important;
-                            color:#3a2d00 !important;
+                    }
+                }
+    
+                .addSidebarItem {
+                    margin: 10px 0;
+                    min-height: 35px;
+                    background-color: rgb(201, 201, 201);
+    
+                    &:hover {
+                        background-color: rgb(181, 181, 181);
+                    }
+                    
+                    .icon {
+                        color: rgb(81, 81, 81);
+                    }
+                }
+            }
+    
+            #sidebarFooter {
+                width: 100%;
+                height: 55px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                position: relative;
+                
+                #darkModeToggleContainer {
+                    width: 100%;
+                    height: 25px;
+                    padding: 15px 0;
+                    position: relative;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    cursor: pointer;
+    
+                    transition: background-color 0.3s ease;
+    
+                    &:hover {
+                        background-color: rgb(225, 225, 225);
+                    }
+                    
+                    #darkModeToggleMask {
+                        width: 100%;
+                        height: 100%;
+                        clip-path: circle(12.5px at 50% 50%);
+                    }
+    
+                    #darkModeToggle {
+                        position: absolute;
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 10px;
+                        transition: left 0.3s ease;
+            
+                        left: 24.5px; 
+            
+                        .darkModeToggle-icon {
+                            color: rgb(136, 136, 136);
+                            width: 25px;
+                            height: 25px;
                         }
-                        &.done {
-                            .columnHeader {
-                                background: linear-gradient(90deg,#6dff9b,#5bffa1) !important;
-                                color:#003318 !important;
-                            }
-
-                            .actionButton[data-act="right"] {
-                                visibility: hidden;
-                                position: absolute;
-                                width: 0;
-                                height: 0;
-                                pointer-events: none;
-                            }
+                    }
+                }
+            }
+        }
+    
+        #main {
+            flex: 1;
+            background-color:rgb(255, 255, 255);
+    
+            #tableContainer {
+                width: calc(100% - 40px);
+                height: calc(100% - 40px);
+                padding: 20px;
+                gap: 20px;
+                overflow: auto;
+                display: flex;
+                position: relative;
+                flex-direction: column;
+                align-items: center;
+                overflow: scroll;
+                
+                .table {
+                    width: calc(100% - 20px);
+                    position: relative;
+                    background: rgba(0,0,0,0.04);
+                    border-radius: 22px;
+                    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+                    border: 1px solid rgba(0,0,0,0.06);
+                    transition: opacity .25s ease, transform .25s ease, padding-top .25s ease;
+        
+                    &.showName {
+                        padding-top: 30px;
+        
+                        .tableLabel {
+                            opacity: 1;
                         }
-                        
-                        .columnBody {
-                            padding: 10px;
-                            flex: 1;
+                    }
+    
+                    &.fade-out {
+                        opacity: 0 !important;
+                        transform: scale(0) !important;
+                        pointer-events: none !important;
+                    }
+                    &.fade-in {
+                        opacity: 1 !important;
+                        transform: scale(1) !important;
+                        pointer-events: auto !important;
+                    }
+        
+                    .tableLabel {
+                        position: absolute;
+                        top: 10px;
+                        width: 100%;
+                        text-align: center;
+                        font-weight: 700;
+                        font-size: 18px;
+                        color: #000;
+                        opacity .3s ease;
+                    }
+        
+                    .board {
+                        position: relative;
+                        z-index: 1;
+                        display: grid;
+                        grid-template-columns: 1fr 1fr 1fr;
+                        gap: 12px;
+                        padding: 12px;
+        
+                        .column {
                             display: flex;
                             flex-direction: column;
-                            align-items: center;
-                            gap: 20px;
-                    
-                            &:has(.tasks:empty) {
-                                justify-content: center;
+                            gap: 10px;
+                            background: rgba(255,255,255,0.6);
+                            border-radius: 16px;
+                            overflow: hidden;
+        
+                            .columnHeader {
+                                padding: 10px 14px;
+                                text-align: center;
+                                font-weight: 700;
+                                letter-spacing: .4px;
+                                color: #202020;
                             }
-                    
-                            .tasks {
-                                width: 100%;
-                                display: flex;
-                                flex-direction: column;
-                                gap: 5px;
-                    
-                                &:empty::after {
-                                    content: "No Tasks yet";
-                                    color: rgba(0, 0, 0, 0.3);
-                                    font-style: italic;
-                                    font-weight: 400;
-                                    text-align: center;
-                                    padding: 15px;
-                                    display: block;
+    
+                            &.todo {
+                                .columnHeader {
+                                    background: linear-gradient(90deg,#ff7070,#ff8a8a) !important;
+                                    color:#2b0000 !important;
                                 }
     
-                                .task {
-                                    position: relative;
-                                    background: rgba(255,255,255,0.85);
-                                    border: 1px solid rgba(0,0,0,0.08);
-                                    box-shadow: 0 10px 20px rgba(0,0,0,0.06);
-                                    border-radius: 14px;
-                                    padding: 14px 48px 14px 14px;
-                                    font-weight: 600;
-                                    color: #222;
-                                    overflow: hidden;
-                                    transition: transform .12s ease, box-shadow .12s ease;
+                                .actionButton[data-act="left"] {
+                                    visibility: hidden;
+                                    position: absolute;
+                                    width: 0;
+                                    height: 0;
+                                    pointer-events: none;
+                                }
+                            }
+                            &.progress .columnHeader {
+                                background: linear-gradient(90deg,#ffe45e,#ffd35a) !important;
+                                color:#3a2d00 !important;
+                            }
+                            &.done {
+                                .columnHeader {
+                                    background: linear-gradient(90deg,#6dff9b,#5bffa1) !important;
+                                    color:#003318 !important;
+                                }
     
-                                    &:hover {
-                                        box-shadow: 0 12px 22px rgba(0,0,0,0.08);
+                                .actionButton[data-act="right"] {
+                                    visibility: hidden;
+                                    position: absolute;
+                                    width: 0;
+                                    height: 0;
+                                    pointer-events: none;
+                                }
+                            }
+                            
+                            .columnBody {
+                                padding: 10px;
+                                flex: 1;
+                                display: flex;
+                                flex-direction: column;
+                                align-items: center;
+                                gap: 20px;
+                        
+                                &:has(.tasks:empty) {
+                                    justify-content: center;
+                                }
+                        
+                                .tasks {
+                                    width: 100%;
+                                    display: flex;
+                                    flex-direction: column;
+                                    gap: 5px;
+                        
+                                    &:empty::after {
+                                        content: "No Tasks yet";
+                                        color: rgba(0, 0, 0, 0.3);
+                                        font-style: italic;
+                                        font-weight: 400;
+                                        text-align: center;
+                                        padding: 15px;
+                                        display: block;
                                     }
-    
-                                    input.title {
-                                        width: 100%;
-                                        border: none;
-                                        outline: none;
-                                        background: transparent;
-                                        font-family: "Montserrat", sans-serif;
+        
+                                    .task {
+                                        position: relative;
+                                        background: rgba(255,255,255,0.85);
+                                        border: 1px solid rgba(0,0,0,0.08);
+                                        box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+                                        border-radius: 14px;
+                                        padding: 14px 48px 14px 14px;
                                         font-weight: 600;
-                                        color: inherit;
-                                    }
-    
-                                    .actions {
-                                        position: absolute;
-                                        top: 0;
-                                        right: 0;
-                                        height: 100%;
-                                        display: flex;
-                                        align-items: center;
-                                        gap: 6px;
-                                        padding: 0 10px 0 12px;
-                                        background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,0.95));
-                                        transform: translateX(100%);
-                                        transition: transform .18s ease;
-    
-                                        .actionButton {
-                                            display: grid;
-                                            place-items: center;
-                                            width: 28px;
-                                            height: 28px;
-                                            border-radius: 8px;
-                                            cursor: pointer;
-                                            transition: background-color .15s ease, transform .05s ease, border-color .15s ease;
-    
-                                            &:hover {
-                                                background: rgba(0, 0, 0, 0.21);
-                                            }
-    
-                                            &:active {
-                                                transform: translateY(1px);
-                                            }
-
-                                            &[data-act="delete"] {
-                                                background: rgba(255, 0, 0, 0.4) !important;
-
+                                        color: #222;
+                                        overflow: hidden;
+                                        transition: transform .12s ease, box-shadow .12s ease;
+        
+                                        &:hover {
+                                            box-shadow: 0 12px 22px rgba(0,0,0,0.08);
+                                        }
+        
+                                        input.title {
+                                            width: 100%;
+                                            border: none;
+                                            outline: none;
+                                            background: transparent;
+                                            font-family: "Montserrat", sans-serif;
+                                            font-weight: 600;
+                                            color: inherit;
+                                        }
+        
+                                        .actions {
+                                            position: absolute;
+                                            top: 0;
+                                            right: 0;
+                                            height: 100%;
+                                            display: flex;
+                                            align-items: center;
+                                            gap: 6px;
+                                            padding: 0 10px 0 12px;
+                                            background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,0.95));
+                                            transform: translateX(100%);
+                                            transition: transform .18s ease;
+        
+                                            .actionButton {
+                                                display: grid;
+                                                place-items: center;
+                                                width: 28px;
+                                                height: 28px;
+                                                border-radius: 8px;
+                                                cursor: pointer;
+                                                transition: background-color .15s ease, transform .05s ease, border-color .15s ease;
+        
                                                 &:hover {
-                                                    background: rgba(255, 0, 0, 0.65) !important;
+                                                    background: rgba(0, 0, 0, 0.21);
+                                                }
+        
+                                                &:active {
+                                                    transform: translateY(1px);
+                                                }
+    
+                                                &[data-act="delete"] {
+                                                    background: rgba(255, 0, 0, 0.4) !important;
+    
+                                                    &:hover {
+                                                        background: rgba(255, 0, 0, 0.65) !important;
+                                                    }
                                                 }
                                             }
                                         }
+        
+                                        &:hover .actions { transform: translateX(0); }
                                     }
-    
-                                    &:hover .actions { transform: translateX(0); }
                                 }
-                            }
-                    
-                            .addTaskButton {
-                                width: 100%;
-                                padding: 10px 12px;
-                                border-radius: 12px;
-                                border: 1px dashed rgba(0,0,0,0.2);
-                                background: transparent;
-                                cursor: pointer;
-                                font-family: "Montserrat", sans-serif;
-                                color: #2a2a2a;
-                                transition: background-color .2s ease, border-color .2s ease;
-                    
-                                .icon {
+                        
+                                .addTaskButton {
+                                    width: 100%;
+                                    padding: 10px 12px;
+                                    border-radius: 12px;
+                                    border: 1px dashed rgba(0,0,0,0.2);
+                                    background: transparent;
+                                    cursor: pointer;
+                                    font-family: "Montserrat", sans-serif;
                                     color: #2a2a2a;
-                                }
-                                
-                                &:hover {
-                                    background: rgba(0,0,0,0.04);
-                                    border-color: rgba(0,0,0,0.35);
+                                    transition: background-color .2s ease, border-color .2s ease;
+                        
+                                    .icon {
+                                        color: #2a2a2a;
+                                    }
+                                    
+                                    &:hover {
+                                        background: rgba(0,0,0,0.04);
+                                        border-color: rgba(0,0,0,0.35);
+                                    }
                                 }
                             }
                         }
@@ -603,176 +603,180 @@ body {
                 }
             }
         }
+    
+        &.showAllTables {
+            #tableContainer .table {
+                padding-top: 30px;
+    
+                .tableLabel {
+                    opacity: 1;
+                }
+            }
+        }
     }
-
-
+    
     /* dark mode */
     &.dark {
         background-color:rgb(45, 45, 45);
-
-        #dialogOverlay {
-            background-color: rgba(0, 0, 0, 0.6);
-
-            .dialog {
-                background-color: #1e1e1e;
-                border-color: rgba(255,255,255,0.08);
-                color: rgb(235, 235, 235);
-
-                p { color: rgb(200, 200, 200); }
-
-                input {
-                    background-color: #2a2a2a;
-                    border-color: #3a3a3a;
-                    color: rgb(235, 235, 235);
-
-                    &:focus-visible {
-                        border-color: #5a5a5a;
-                        box-shadow: 0 0 0 3px rgba(255,255,255,0.06);
-                    }
-                }
-
-                .actions {
-                    button {
-                        background-color: #2a2a2a;
-                        color: rgb(235, 235, 235);
-                        border-color: #3a3a3a;
-
-                        &:hover {
-                            background-color: #2f2f2f;
-                            border-color: #4a4a4a;
-                        }
-                    }
-                }
-            }
-        }
-
-        #sidebar {
-            --sidebar-bg: #121212;
-            background-color: #121212;
-
-            #sidebarHeader {
-                .sidebarLogo {
-                    fill: rgb(255, 255, 255);
-                }
-            }
-
-            #sidebarContent {
-                .sidebarItem, .addSidebarItem {
-                    &:hover {
-                        background-color: rgb(29, 29, 29);
-                    }
-
-                    &.selected {
-                        background-color: rgb(29, 29, 29);
-
-                        .sidebarItemIcon {
-                            color: rgb(255, 255, 255);
-                        }
-                    }
-                }
-
-                .addSidebarItem {
-                    background-color: rgb(53, 53, 53);
     
-                    &:hover {
-                        background-color: rgb(83, 83, 83);
-                    }
-                    
-                    .icon {
-                        color: rgb(230, 230, 230);
-                    }
-                }
-            }
-
-            #sidebarFooter {
-                #darkModeToggleContainer {
-                    
-                    &:hover {
-                        background-color: rgb(29, 29, 29);
-                    }
-
-                    #darkModeToggle {
-                        left: -10.5px; 
-                    }
-                }
-            }
-        }
-
-        #main {
-            background-color: rgb(45, 45, 45);
-
-            #tableContainer { /* dark subtle tweaks */
-                .table {
-                    background: #353535;
-                    border-color: #414141;
-                }
-
-                .tableLabel { color: #fff; }
-
-                .board {
-                    .column {
-                        background: rgba(255,255,255,0.06);
-
-                        .columnHeader {
-                            background: rgba(255,255,255,0.06);
-                            color: rgba(255,255,255,0.5);
+        #app {
+            background-color:rgb(45, 45, 45);
+    
+            #dialogOverlay {
+                background-color: rgba(0, 0, 0, 0.6);
+        
+                .dialog {
+                    background-color: #1e1e1e;
+                    border-color: rgba(255,255,255,0.08);
+                    color: rgb(235, 235, 235);
+        
+                    p { color: rgb(200, 200, 200); }
+        
+                    input {
+                        background-color: #2a2a2a;
+                        border-color: #3a3a3a;
+                        color: rgb(235, 235, 235);
+        
+                        &:focus-visible {
+                            border-color: #5a5a5a;
+                            box-shadow: 0 0 0 3px rgba(255,255,255,0.06);
                         }
-
-                        .columnBody {
-                            .tasks {
-                                .task {
-                                    background: rgba(0,0,0,0.25);
-                                    color: #eee;
-                                    border-color: rgba(255,255,255,0.08);
-
-                                    .actions {
-                                        background: linear-gradient(90deg, rgba(0,0,0,0), rgba(0,0,0,0.5));
-                                    }
-                                }
-
-                                &:empty::after {
-                                    color: rgba(255, 255, 255, 0.3);
-                                }
+                    }
+        
+                    .actions {
+                        button {
+                            background-color: #2a2a2a;
+                            color: rgb(235, 235, 235);
+                            border-color: #3a3a3a;
+        
+                            &:hover {
+                                background-color: #2f2f2f;
+                                border-color: #4a4a4a;
                             }
                         }
                     }
                 }
-
-                .task {
-                    background: rgba(0,0,0,0.25) !important;
+            }
+        
+            #sidebar {
+                --sidebar-bg: #121212;
+                background-color: #121212;
+        
+                #sidebarHeader {
+                    .sidebarLogo {
+                        fill: rgb(255, 255, 255);
+                    }
                 }
-
-                .actions {
-                    .actionButton {
+        
+                #sidebarContent {
+                    .sidebarItem, .addSidebarItem {
                         &:hover {
-                            background: rgba(255, 255, 255, 0.21) !important;
+                            background-color: rgb(29, 29, 29);
+                        }
+        
+                        &.selected {
+                            background-color: rgb(29, 29, 29);
+        
+                            .sidebarItemIcon {
+                                color: rgb(255, 255, 255);
+                            }
+                        }
+                    }
+        
+                    .addSidebarItem {
+                        background-color: rgb(53, 53, 53);
+        
+                        &:hover {
+                            background-color: rgb(83, 83, 83);
+                        }
+                        
+                        .icon {
+                            color: rgb(230, 230, 230);
                         }
                     }
                 }
-
-                .addTaskButton {
-                    border-color: #636363 !important;
-
-                    &:hover {
-                        background: #4c4c4c !important;
-                        border-color: #6c6c6c !important;
-                    }
-
-                    .icon {
-                        color: #e9e9e9 !important;
+        
+                #sidebarFooter {
+                    #darkModeToggleContainer {
+                        
+                        &:hover {
+                            background-color: rgb(29, 29, 29);
+                        }
+        
+                        #darkModeToggle {
+                            left: -10.5px; 
+                        }
                     }
                 }
             }
-        }
-    }
-
-    &.showAllTables {
-        #tableContainer .table {
-            padding-top: 30px;
-
-            .tableLabel {
-                opacity: 1;
+        
+            #main {
+                background-color: rgb(45, 45, 45);
+        
+                #tableContainer { /* dark subtle tweaks */
+                    .table {
+                        background: #353535;
+                        border-color: #414141;
+                    }
+        
+                    .tableLabel { color: #fff; }
+        
+                    .board {
+                        .column {
+                            background: rgba(255,255,255,0.06);
+        
+                            .columnHeader {
+                                background: rgba(255,255,255,0.06);
+                                color: rgba(255,255,255,0.5);
+                            }
+        
+                            .columnBody {
+                                .tasks {
+                                    .task {
+                                        background: rgba(0,0,0,0.25);
+                                        color: #eee;
+                                        border-color: rgba(255,255,255,0.08);
+        
+                                        .actions {
+                                            background: linear-gradient(90deg, rgba(0,0,0,0), rgba(0,0,0,0.5));
+                                        }
+                                    }
+        
+                                    &:empty::after {
+                                        color: rgba(255, 255, 255, 0.3);
+                                    }
+                                }
+                            }
+                        }
+                    }
+        
+                    .task {
+                        background: rgba(0,0,0,0.25) !important;
+                    }
+        
+                    .actions {
+                        .actionButton {
+                            &:hover {
+                                background: rgba(255, 255, 255, 0.21) !important;
+                            }
+                        }
+                    }
+        
+                    .addTaskButton {
+                        border-color: #636363 !important;
+        
+                        &:hover {
+                            background: #4c4c4c !important;
+                            border-color: #6c6c6c !important;
+                        }
+        
+                        .icon {
+                            color: #e9e9e9 !important;
+                        }
+                    }
+                }
             }
         }
     }
 }
+
