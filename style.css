@@ -1,3 +1,7 @@
+html {
+    overflow: hidden;
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -385,6 +389,7 @@ body {
                 
                 .table {
                     width: calc(100% - 20px);
+                    min-width: 300px;
                     position: relative;
                     background: rgba(0,0,0,0.04);
                     border-radius: 22px;
@@ -425,12 +430,15 @@ body {
                     .board {
                         position: relative;
                         z-index: 1;
-                        display: grid;
-                        grid-template-columns: 1fr 1fr 1fr;
+                        display: flex;
+                        flex-direction: row;
+                        flex-wrap: wrap;
                         gap: 12px;
                         padding: 12px;
         
                         .column {
+                            flex: 1;
+                            min-width: 250px;
                             display: flex;
                             flex-direction: column;
                             gap: 10px;
@@ -842,6 +850,84 @@ body {
                             background-color: #2f2f2f;
                             border-color: #4a4a4a;
                         }   
+                    }
+                }
+            }
+        }
+    }
+
+    @media (hover: none) and (pointer: coarse) {
+        .sidebarItem.selected {
+            .deleteButton {
+                pointer-events: auto !important;
+                opacity: 1 !important;
+            }
+        }
+    }
+
+    @media (max-width: 450px) {
+        #app {
+            flex-direction: column-reverse;
+            #sidebar {
+                flex-direction: row;
+
+                align-items: center;
+                justify-content: center;
+                
+                width: 100%;
+                height: 75px;
+
+                #sidebarHeader {
+                    width: 50px;
+                }
+
+                .divider {
+                    height: calc(100% - 20px);
+                    width: 2px;
+                    margin: 10px 0;
+                }
+
+                #sidebarContent {
+                    flex-direction: row;
+                    gap: 10px;
+
+                    margin: 0 10px;
+
+                    #sidebarList {
+                        flex-direction: row;
+                        margin: 0;
+                        height: 75px;
+
+                        .sidebarItem {
+                            min-width: 35px;
+                        }
+                    }
+                }
+
+                #sidebarFooter {
+                    flex-direction: column;
+                    gap: 10px;
+
+                    width: 50px;
+
+                    #darkModeToggle {
+                        left: 11.5px !important;
+                    }
+                }
+            }
+
+            #main {
+                height: calc(100% - 75px);
+            }
+        }
+
+        &.dark {
+            #app {
+                #sidebar {
+                    #sidebarFooter {
+                        #darkModeToggle {
+                            left: -22.5px !important;
+                        }
                     }
                 }
             }
