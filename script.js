@@ -161,6 +161,7 @@ function onNewTableNameInput(e) {
     }
 }
 function closeNewTableDialog() {
+    document.activeElement.blur();
     newTableDialog.classList.remove("show");
 }
 
@@ -453,6 +454,8 @@ function addTask(tableId, col) {
 }
 
 function editTask(tableId, col, taskId, newTitle) {
+    document.activeElement.blur();
+
     const idx = getTaskIndexById(tableId, col, taskId);
     if (idx === -1) return;
     const item = tables[tableId].tasks[col][idx];
@@ -468,6 +471,8 @@ function editTask(tableId, col, taskId, newTitle) {
 }
 
 function deleteTask(tableId, col, taskId) {
+    document.activeElement.blur();
+
     const idx = getTaskIndexById(tableId, col, taskId);
     if (idx === -1) return;
     tables[tableId].tasks[col].splice(idx, 1);
@@ -476,6 +481,8 @@ function deleteTask(tableId, col, taskId) {
 }
 
 function moveTask(tableId, col, taskId, direction) {
+    document.activeElement.blur();
+
     const order = ['todo','progress','done'];
     const fromIdx = order.indexOf(col);
     const toIdx = fromIdx + direction;
