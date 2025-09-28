@@ -461,6 +461,10 @@ body {
                                     background: linear-gradient(90deg,#ff7070,#ff8a8a) !important;
                                     color:#2b0000 !important;
                                 }
+
+                                .task {
+                                    background: rgb(255 132 132 / 33%) !important;
+                                }
     
                                 .actionButton[data-act="left"] {
                                     visibility: hidden;
@@ -470,14 +474,24 @@ body {
                                     pointer-events: none;
                                 }
                             }
-                            &.progress .columnHeader {
-                                background: linear-gradient(90deg,#ffe45e,#ffd35a) !important;
-                                color:#3a2d00 !important;
+                            &.progress {
+                                .columnHeader {
+                                    background: linear-gradient(90deg,#ffe45e,#ffd35a) !important;
+                                    color:#3a2d00 !important;
+                                }
+
+                                .task {
+                                    background: rgb(255 214 90 / 33%) !important;
+                                }
                             }
                             &.done {
                                 .columnHeader {
                                     background: linear-gradient(90deg,#6dff9b,#5bffa1) !important;
                                     color:#003318 !important;
+                                }
+
+                                .task {
+                                    background: rgb(93 255 160 / 33%) !important;
                                 }
     
                                 .actionButton[data-act="right"] {
