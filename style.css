@@ -387,7 +387,7 @@ body {
                 position: relative;
                 flex-direction: column;
                 align-items: center;
-                overflow: scroll;
+                overflow-y: scroll;
                 
                 .table {
                     width: calc(100% - 20px);
