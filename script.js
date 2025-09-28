@@ -193,6 +193,21 @@ function tableDeleteButtonClick(e) {
 
 
 
+const deleteTaskDialog = document.getElementById("deleteTaskDialog");
+const deleteTaskName = document.getElementById("deleteTaskName");
+const deleteTaskConfirmButton = document.getElementById("deleteTaskConfirmButton");
+function openDeleteTaskDialog(tableId, col, taskId, taskName) {
+    deleteTaskConfirmButton.setAttribute("onclick", `deleteTask("${tableId}", "${col}", "${taskId}")`);
+    deleteTaskName.innerHTML = taskName;
+    deleteTaskDialog.classList.add("show");
+}
+function closeDeleteTaskDialog() {
+    deleteTaskDialog.classList.remove("show");
+    deleteTaskConfirmButton.removeAttribute("onclick");
+    deleteTaskName.innerHTML = "";
+}
+
+
 function createTable(id, name, tasks = {}, addToLocalStorage = true) {
     let newTableId;
     if (id && typeof id === "string" && id.trim() !== "") {
@@ -385,6 +400,7 @@ function createTaskItem(tableId, col, index, item) {
     const t = normalizeTaskItem(item);
     const task = document.createElement('div');
     task.className = 'task';
+    task.setAttribute('data-id', t.id);
 
     const input = document.createElement('textarea');
     input.className = 'title';
@@ -406,7 +422,7 @@ function createTaskItem(tableId, col, index, item) {
         const btn = e.target.closest('.actionButton');
         if (!btn) return;
         const act = btn.dataset.act;
-        if (act === 'delete') deleteTask(tableId, col, t.id);
+        if (act === 'delete') openDeleteTaskDialog(tableId, col, t.id, t.title);
         if (act === 'left') moveTask(tableId, col, t.id, -1);
         if (act === 'right') moveTask(tableId, col, t.id, 1);
     });
@@ -440,7 +456,14 @@ function editTask(tableId, col, taskId, newTitle) {
     const idx = getTaskIndexById(tableId, col, taskId);
     if (idx === -1) return;
     const item = tables[tableId].tasks[col][idx];
-    tables[tableId].tasks[col][idx] = { id: item.id || taskId, title: newTitle || 'Task' };
+    
+    if (!newTitle || newTitle.trim() === "") {
+        openDeleteTaskDialog(tableId, col, taskId, item.title);
+        saveAndRerender();
+        return;
+    }
+    
+    tables[tableId].tasks[col][idx] = { id: item.id || taskId, title: newTitle };
     saveAndRerender();
 }
 
@@ -449,6 +472,7 @@ function deleteTask(tableId, col, taskId) {
     if (idx === -1) return;
     tables[tableId].tasks[col].splice(idx, 1);
     saveAndRerender();
+    closeDeleteTaskDialog();
 }
 
 function moveTask(tableId, col, taskId, direction) {
