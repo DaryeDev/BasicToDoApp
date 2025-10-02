@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDo</title>
+
+    <!-- Ionicons -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#121212">
+
+    <link rel="icon" type="image/svg+xml" href="icons/td.svg">
+    <link rel="icon" type="image/png" sizes="512x512" href="icons/icon_512.png">
+    <link rel="apple-touch-icon" sizes="512x512" href="icons/icon_round.png">
+
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+    <div id="app" class="dark">
+        <div id="dialogOverlay" onclick="closeAllDialogs(event)">
+            <div id="newTableDialog" class="dialog">
+                <h2>New Table</h2>
+                <p>
+                    <input type="text" id="newTableName" name="newTableName" placeholder="📖 School Tasks"
+                        onkeypress="onNewTableNameInput(event)">
+                </p>
+                <div class="actions">
+                    <button id="cancel" onclick="closeNewTableDialog()">Cancel</button>
+                    <button type="submit" onclick="createTable()">Create Table</button>
+                </div>
+            </div>
+
+            <div id="deleteTableDialog" class="dialog">
+                <h2>Delete Table</h2>
+                <p>Are you sure you want to delete Table "<b><span id="deleteTableName"></span></b>"?</p>
+                <div class="actions">
+                    <button id="cancel" onclick="closeDeleteTableDialog()">Cancel</button>
+                    <button type="submit" id="deleteTableConfirmButton" class="danger">Delete Table</button>
+                </div>
+            </div>
+
+            <div id="deleteTaskDialog" class="dialog">
+                <h2>Delete Task</h2>
+                <p>Are you sure you want to delete Task "<b><span id="deleteTaskName"></span></b>"?</p>
+                <div class="actions">
+                    <button id="cancel" onclick="closeDeleteTaskDialog()">Cancel</button>
+                    <button type="submit" id="deleteTaskConfirmButton" class="danger">Delete Task</button>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="sidebar">
+            <div id="sidebarHeader">
+                <svg class="sidebarLogo" version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080"
+                    width="1080" height="1080">
+                    <path class="a" d="m261.1 162.5h-183.1v-145.5h531.2v145.5h-183.1v703.4h-165z" />
+                    <path class="a"
+                        d="m477.8 1063v-848.9h351.7q172.2 152.8 172.2 414.7 0 260.8-161.3 434.2zm165-140.7h109.1q34-42.4 53.4-123.7 20.6-81.2 20.6-161.3 0-190.4-71.6-277.7h-111.5z" />
+                </svg>
+            </div>
+            <div class="divider"></div>
+            <div id="sidebarContent">
+                <ul id="sidebarList">
+                    <li class="sidebarItem selected" id="allTablesItem" title="All Tables">
+                        <ion-icon class="icon" name="grid-outline"></ion-icon>
+                    </li>
+                </ul>
+
+                <div class="addSidebarItem" title="Add Table" onclick="openNewTableDialog()">
+                    <ion-icon class="icon" name="add"></ion-icon>
+                </div>
+            </div>
+            <div class="divider"></div>
+            <div id="sidebarFooter" onclick="toggleDarkMode()">
+                <div id="darkModeToggleContainer" title="Toggle Dark Mode">
+                    <div id="darkModeToggleMask">
+                        <div id="darkModeToggle">
+                            <ion-icon class="darkModeToggle-icon" name="moon"></ion-icon>
+                            <ion-icon class="darkModeToggle-icon" name="sunny"></ion-icon>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="main">
+            <div id="tableContainer"></div>
+            <div id="emptyTableContainer">
+                <h2>No Tables yet</h2>
+                <p>Create a new Table to get started</p>
+                <button onclick="openNewTableDialog()">Create Table</button>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
